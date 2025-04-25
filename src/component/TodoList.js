@@ -48,7 +48,7 @@ const completedTodos = todos.filter((t) => {
 
   
   useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos") ?? []);
+    const storedTodos = JSON.parse(localStorage.getItem("todos")) ?? [];
     setToDos(storedTodos);
   }, []);
 
