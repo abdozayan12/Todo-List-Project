@@ -3,24 +3,23 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
 import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { v4 as uuidv4 } from "uuid";
 
 
 const todos = [
   {
-    id: 1,
+    id: uuidv4(),
     title: "read",
     body: "sdvfdsgrs",
     isComplete: false,
   },
   {
-    id: 2,
+    id: uuidv4,
     title: "study",
     body: "fgkgcjhfd",
     isComplete: false,
@@ -28,31 +27,22 @@ const todos = [
 ];
 
 export default function TodoList() {
-    const [alignment, setAlignment] = React.useState("الكل");
-
-    const handleChange = (event, newAlignment) => {
-      setAlignment(newAlignment);
-    };
+  const todoL = todos.map((t) => {
+      return <Todo key={t.id} title={t.title} body={t.body} />;      
+    });
   return (
-    <Container maxWidth="sm">
+     <Container maxWidth="sm">
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography variant="h1" component="div">
             مهامى
           </Typography>
-          <Divider variant="middle" />
-          <ToggleButtonGroup
-            color="primary"
-            value={alignment}
-            exclusive
-            onChange={handleChange}
-            aria-label="Platform"
-          >
+          
             <ToggleButton value="غير منجز">غير منجز</ToggleButton>
             <ToggleButton value="منجز">منجز</ToggleButton>
             <ToggleButton value="الكل">الكل</ToggleButton>
-          </ToggleButtonGroup>
-          <Todo />
+          
+          {todoL}
           <Grid
             container
             spacing={2}
