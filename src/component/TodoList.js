@@ -1,13 +1,31 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Todo from "./Todo";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+
+const todos = [
+  {
+    id: 1,
+    title: "read",
+    body: "sdvfdsgrs",
+    isComplete: false,
+  },
+  {
+    id: 2,
+    title: "study",
+    body: "fgkgcjhfd",
+    isComplete: false,
+  },
+];
 
 export default function TodoList() {
     const [alignment, setAlignment] = React.useState("الكل");
@@ -34,10 +52,24 @@ export default function TodoList() {
             <ToggleButton value="منجز">منجز</ToggleButton>
             <ToggleButton value="الكل">الكل</ToggleButton>
           </ToggleButtonGroup>
+          <Todo />
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginTop: "15px",}}
+          >
+            <Grid size={8}>
+              <TextField
+                id="outlined-basic"
+                label="عنوان المهمه"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid size={4} >
+              <Button sx={{width: "100%", height: "100%", backgroundColor: "green"}} variant="contained">إضافة</Button>
+            </Grid>
+          </Grid>
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
       </Card>
     </Container>
   );

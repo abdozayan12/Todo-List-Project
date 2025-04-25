@@ -4,5 +4,21 @@
   align-items: center;
   text-align: center;
   height: 100vh;
+  direction: rtl;
   background-color: rgba(0, 0, 0, 0.842);
+  font-family: Amiri;
+}
+
+.iconBtn {
+  transition: all 0.5s !important;
+}
+
+.iconBtn:hover {
+  background-color: #c5c5c5 !important;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+@font-face {
+  font-family: Amiri;
+  src: url("../public/font/Amiri-Regular.ttf");
 }
