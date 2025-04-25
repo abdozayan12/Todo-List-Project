@@ -3,19 +3,38 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useContext, useEffect , useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../context/TodosContext";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TodoList() {
   const { todos, setToDos } = useContext(TodoContext);
   const [titleInput, setTitleInput] = useState("");
-  const todoL = todos.map((t) => {
+  const [displayTodosType, setDisplayTodosType] = useState("all")
+
+const completedTodos = todos.filter((t) => {
+  return t.isComplete;
+});
+
+  const notCompletedTodos = todos.filter((t) => {
+    return !t.isComplete;
+  });
+
+  let renderedTodos = todos
+  if (displayTodosType === "completed") {
+    renderedTodos = completedTodos
+  } else if (displayTodosType === "non-completed") {
+    renderedTodos = notCompletedTodos
+  } else {
+    renderedTodos = todos
+  }
+  const todoL = renderedTodos.map((t) => {
     return (
       <Todo
         key={t.id}
@@ -27,16 +46,17 @@ export default function TodoList() {
     );
   });
 
+  
   useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos"))
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
     setToDos(storedTodos);
   }, []);
 
+  function changeDisplayType(e) {
+    setDisplayTodosType(e.target.value)
+  }
+
   function handleAdd() {
-    if (!titleInput.trim()) {
-      alert("Please enter a title for the task.");
-      return;
-    }
     const newTodo = {
       id: uuidv4(),
       title: titleInput,
@@ -45,21 +65,29 @@ export default function TodoList() {
     };
     const addedTodos = [...todos, newTodo];
     setToDos(addedTodos);
-    localStorage.setItem("todos", JSON.stringify(addedTodos))
+    localStorage.setItem("todos", JSON.stringify(addedTodos));
     setTitleInput("");
   }
 
   return (
     <Container maxWidth="sm">
-      <Card sx={{ minWidth: 275 }}>
+      <Card sx={{ minWidth: 275 }} style={{maxHeight: "80vh", overflow: "scroll"}}>
         <CardContent>
           <Typography variant="h1" component="div">
             مهامى
           </Typography>
-
-          <ToggleButton value="غير منجز">غير منجز</ToggleButton>
-          <ToggleButton value="منجز">منجز</ToggleButton>
-          <ToggleButton value="الكل">الكل</ToggleButton>
+          <ToggleButtonGroup
+            style={{ direction: "ltr" }}
+            color="primary"
+            value={displayTodosType}
+            exclusive
+            onChange={changeDisplayType}
+            aria-label="Platform"
+          >
+            <ToggleButton value="non-completed">غير منجز</ToggleButton>
+            <ToggleButton value="completed">منجز</ToggleButton>
+            <ToggleButton value="all">الكل</ToggleButton>
+          </ToggleButtonGroup>
 
           {todoL}
           <Grid container spacing={2} sx={{ marginTop: "15px" }}>
@@ -81,6 +109,7 @@ export default function TodoList() {
                 onClick={() => {
                   handleAdd();
                 }}
+                disabled={titleInput == 0}
               >
                 إضافة
               </Button>

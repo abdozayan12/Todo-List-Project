@@ -184,7 +184,12 @@ export default function Todo({ id, title, body, isComplete }) {
           color: "white",
         }}
       >
-        <CardContent>
+        <CardContent
+          style={{
+            backgroundColor: isComplete ? "#f1f8e9" : "none",
+            color: isComplete ? "#33691e" : "none",
+          }}
+        >
           <Grid
             container
             spacing={2}
@@ -244,6 +249,7 @@ export default function Todo({ id, title, body, isComplete }) {
                   textAlign: "right",
                   padding: "20px",
                   borderRadius: "10px",
+                  textDecoration: isComplete ? "line-through" : "none",
                 }}
                 component="div"
               >
@@ -255,6 +261,7 @@ export default function Todo({ id, title, body, isComplete }) {
                   textAlign: "right",
                   padding: "20px",
                   borderRadius: "10px",
+                  textDecoration: isComplete ? "line-through" : "none",
                 }}
                 component="div"
               >
