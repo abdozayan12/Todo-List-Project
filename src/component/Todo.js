@@ -7,7 +7,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useContext, useState } from "react";
+import { useContext, useState} from "react";
 import { TodoContext } from "../context/TodosContext";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -30,6 +30,7 @@ export default function Todo({ id, title, body, isComplete }) {
       }
       return t;
     });
+    localStorage.setItem("todos", JSON.stringify(updateTodo));
     setToDos(updateTodo);
   }
 
@@ -55,6 +56,7 @@ export default function Todo({ id, title, body, isComplete }) {
     const updatedTodosAfterDelete = todos.filter((t) => {
       return t.id !== todoId;
     });
+    localStorage.setItem("todos", JSON.stringify(updatedTodosAfterDelete));
     setToDos(updatedTodosAfterDelete);
   }
 
@@ -65,6 +67,7 @@ export default function Todo({ id, title, body, isComplete }) {
       }
       return t;
     });
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setToDos(updatedTodos);
     setShowUpdateDialog(false); // close dialog after update
   }

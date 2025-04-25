@@ -8,9 +8,8 @@ import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useContext } from "react";
+import { useContext, useEffect , useState} from "react";
 import { TodoContext } from "../context/TodosContext";
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TodoList() {
@@ -28,6 +27,11 @@ export default function TodoList() {
     );
   });
 
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"))
+    setToDos(storedTodos);
+  }, []);
+
   function handleAdd() {
     if (!titleInput.trim()) {
       alert("Please enter a title for the task.");
@@ -39,7 +43,9 @@ export default function TodoList() {
       body: "",
       isComplete: false,
     };
-    setToDos([...todos, newTodo]);
+    const addedTodos = [...todos, newTodo];
+    setToDos(addedTodos);
+    localStorage.setItem("todos", JSON.stringify(addedTodos))
     setTitleInput("");
   }
 
