@@ -15,10 +15,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
+import TextField from "@mui/material/TextField";
 
 export default function Todo({ id, title, body, isComplete }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [updatedTodo, setUpdatedTodo] = useState({ title: "", body: "" });
   const { todos, setToDos } = useContext(TodoContext);
 
   function handleCheckClick(todoId) {
@@ -35,24 +37,44 @@ export default function Todo({ id, title, body, isComplete }) {
     setShowDeleteDialog(true);
   }
 
-  function handleClose() {
+  function handleEdite(id) {
+    const current = todos.find((t) => t.id === id);
+    setUpdatedTodo({ title: current.title, body: current.body });
+    setShowUpdateDialog(true);
+  }
+
+  function handleDeleteClose() {
     setShowDeleteDialog(false);
   }
 
+  function handleUpdateClose() {
+    setShowUpdateDialog(false);
+  }
+
   function handleConfirmDelete(todoId) {
-    const updatedTodos = todos.filter((t) => {
-      
-        return t.id !== todoId;
-      
+    const updatedTodosAfterDelete = todos.filter((t) => {
+      return t.id !== todoId;
+    });
+    setToDos(updatedTodosAfterDelete);
+  }
+
+  function handleConfirmUpdate(todoId) {
+    const updatedTodos = todos.map((t) => {
+      if (t.id === todoId) {
+        return { ...t, title: updatedTodo.title, body: updatedTodo.body };
+      }
+      return t;
     });
     setToDos(updatedTodos);
+    setShowUpdateDialog(false); // close dialog after update
   }
 
   return (
     <>
+      {/* delete Dialog */}
       <Dialog
         style={{ direction: "rtl" }}
-        onClose={handleClose}
+        onClose={handleDeleteClose}
         open={showDeleteDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -69,7 +91,7 @@ export default function Todo({ id, title, body, isComplete }) {
           <Button
             className="iconBtn"
             style={{ backgroundColor: "green", color: "white" }}
-            onClick={handleClose}
+            onClick={handleDeleteClose}
           >
             الغاء
           </Button>
@@ -85,6 +107,72 @@ export default function Todo({ id, title, body, isComplete }) {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* delete Dialog */}
+
+      {/* edite Dialog */}
+      <Dialog
+        style={{ direction: "rtl" }}
+        onClose={handleUpdateClose}
+        open={showUpdateDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          قم بادخال البانات الجديدة
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="title"
+            label="ادخل العنوان الجديد"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={updatedTodo.title}
+            onChange={(e) => {
+              setUpdatedTodo({ ...updatedTodo, title: e.target.value });
+            }}
+          />
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="body"
+            name="body"
+            label="تفاصيل المهمه "
+            type="text"
+            fullWidth
+            variant="standard"
+            value={updatedTodo.body}
+            onChange={(e) => {
+              setUpdatedTodo({ ...updatedTodo, body: e.target.value });
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            className="iconBtn"
+            style={{ backgroundColor: "green", color: "white" }}
+            onClick={handleUpdateClose}
+          >
+            الغاء
+          </Button>
+          <Button
+            className="iconBtn"
+            style={{ backgroundColor: "red", color: "white" }}
+            autoFocus
+            onClick={() => {
+              handleConfirmUpdate(id);
+            }}
+          >
+            تاكيد التعديل
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* edite Dialog */}
       <Card
         sx={{
           minWidth: 275,
@@ -130,6 +218,7 @@ export default function Todo({ id, title, body, isComplete }) {
                   color: "#1769aa",
                   border: "solid #1769aa 3px",
                 }}
+                onClick={() => handleEdite(id)}
               >
                 <EditIcon />
               </IconButton>
