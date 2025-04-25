@@ -7,10 +7,18 @@ import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TodoContext } from "../context/TodosContext";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import { red } from "@mui/material/colors";
 
 export default function Todo({ id, title, body, isComplete }) {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { todos, setToDos } = useContext(TodoContext);
 
   function handleCheckClick(todoId) {
@@ -22,8 +30,61 @@ export default function Todo({ id, title, body, isComplete }) {
     });
     setToDos(updateTodo);
   }
+
+  function handleDelete() {
+    setShowDeleteDialog(true);
+  }
+
+  function handleClose() {
+    setShowDeleteDialog(false);
+  }
+
+  function handleConfirmDelete(todoId) {
+    const updatedTodos = todos.filter((t) => {
+      
+        return t.id !== todoId;
+      
+    });
+    setToDos(updatedTodos);
+  }
+
   return (
     <>
+      <Dialog
+        style={{ direction: "rtl" }}
+        onClose={handleClose}
+        open={showDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          هل انت متاكد من الحذف؟
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            اضغط على زر تاكيد الحذف فى حاله رغبتك فى حذف المهمه او اضغط الغاء
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            className="iconBtn"
+            style={{ backgroundColor: "green", color: "white" }}
+            onClick={handleClose}
+          >
+            الغاء
+          </Button>
+          <Button
+            className="iconBtn"
+            style={{ backgroundColor: "red", color: "white" }}
+            autoFocus
+            onClick={() => {
+              handleConfirmDelete(id);
+            }}
+          >
+            تاكيد الحذف
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Card
         sx={{
           minWidth: 275,
@@ -58,6 +119,7 @@ export default function Todo({ id, title, body, isComplete }) {
                   color: "#b23c17",
                   border: "solid #b23c17 3px",
                 }}
+                onClick={handleDelete}
               >
                 <DeleteIcon />
               </IconButton>
