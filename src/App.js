@@ -1,7 +1,9 @@
-import './App.css';
-import TodoList from './component/TodoList';
-import { createTheme, ThemeProvider} from "@mui/material/styles";
-
+import "./App.css";
+import TodoList from "./component/TodoList";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { TodoContext } from "./context/TodosContext";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 const theme = createTheme({
   typography: {
@@ -9,11 +11,29 @@ const theme = createTheme({
   },
 });
 
+const initialToDos = [
+  {
+    id: uuidv4(),
+    title: "read",
+    body: "sdvfdsgrs",
+    isComplete: false,
+  },
+  {
+    id: uuidv4(),
+    title: "study",
+    body: "fgkgcjhfd",
+    isComplete: false,
+  },
+];
+
 function App() {
+  const [todos, setToDos] = useState(initialToDos);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <TodoList />
+        <TodoContext.Provider value={{ todos, setToDos }}>
+          <TodoList />
+        </TodoContext.Provider>
       </div>
     </ThemeProvider>
   );

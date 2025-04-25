@@ -7,8 +7,21 @@ import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useContext } from "react";
+import { TodoContext } from "../context/TodosContext";
 
-export default function Todo({ id, title, body, isComplete, handleCheck }) {
+export default function Todo({ id, title, body, isComplete }) {
+  const { todos, setToDos } = useContext(TodoContext);
+
+  function handleCheckClick(todoId) {
+    const updateTodo = todos.map((t) => {
+      if (t.id === todoId) {
+        return { ...t, isComplete: !t.isComplete };
+      }
+      return t;
+    });
+    setToDos(updateTodo);
+  }
   return (
     <>
       <Card
@@ -65,7 +78,7 @@ export default function Todo({ id, title, body, isComplete, handleCheck }) {
                   color: isComplete ? "whitesmoke" : "#8bc34a",
                   border: "solid #8bc34a 3px",
                 }}
-                onClick={() => handleCheck(id)}
+                onClick={() => handleCheckClick(id)}
               >
                 <CheckIcon />
               </IconButton>
