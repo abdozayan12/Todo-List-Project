@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function Todo({ id, title, body, isComplete }) {
+export default function Todo({ id, title, body, isComplete, handleCheck }) {
   return (
     <>
       <Card
@@ -61,10 +61,11 @@ export default function Todo({ id, title, body, isComplete }) {
               <IconButton
                 className="iconBtn"
                 style={{
-                  backgroundColor: "white",
-                  color: "#8bc34a",
+                  backgroundColor: isComplete ? "#8bc34a" : "white",
+                  color: isComplete ? "whitesmoke" : "#8bc34a",
                   border: "solid #8bc34a 3px",
                 }}
+                onClick={() => handleCheck(id)}
               >
                 <CheckIcon />
               </IconButton>

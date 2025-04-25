@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import { Alert } from "@mui/material";
 
 
 const initialToDos = [
@@ -32,7 +33,16 @@ export default function TodoList() {
   const [todos, setToDos] = useState(initialToDos)
   const [titleInput, setTitleInput] = useState("")
   const todoL = todos.map((t) => {
-      return <Todo key={t.id} title={t.title} body={t.body} />;      
+      return (
+        <Todo
+          key={t.id}
+          id={t.id}
+          title={t.title}
+          body={t.body}
+          isComplete={t.isComplete}
+          handleCheck={handleCheckClick}
+        />
+      );      
   });
   
   function handleAdd() {
@@ -41,7 +51,7 @@ export default function TodoList() {
       return;
     }
     const newTodo = {
-      id: uuidv4,
+      id: uuidv4(),
       title: titleInput,
       body: "",
       isComplete: false,
@@ -50,7 +60,15 @@ export default function TodoList() {
     setTitleInput("");
   }
 
-  
+   function handleCheckClick(todoId) {
+     const updateTodo = todos.map((t) => {
+       if (t.id === todoId) {
+         return { ...t, isComplete: !t.isComplete };
+       }
+       return t
+     })
+     setToDos(updateTodo)
+   }
 
   return (
      <Container maxWidth="sm">
