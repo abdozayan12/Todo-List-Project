@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function Todo() {
+export default function Todo({id, title, body, isComplete}) {
   return (
     <>
       <Card
@@ -79,8 +79,7 @@ export default function Todo() {
                 }}
                 component="div"
               >
-                المهمه الاولى
-              </Typography>
+                     {title}         </Typography>
               <Typography
                 variant="h6"
                 sx={{
@@ -90,8 +89,7 @@ export default function Todo() {
                 }}
                 component="div"
               >
-                المهمه الاولى
-              </Typography>
+{body}              </Typography>
             </Grid>
           </Grid>
         </CardContent>
