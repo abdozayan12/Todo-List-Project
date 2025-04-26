@@ -20,16 +20,10 @@ const theme = createTheme({
 const initialToDos = [
   {
     id: uuidv4(),
-    title: "read",
-    body: "sdvfdsgrs",
+    title: "اهلا بك",
+    body: "إضغط تعديل لتغير تفاصيل المهمه او قم باضافه مهمات جديده",
     isComplete: false,
-  },
-  {
-    id: uuidv4(),
-    title: "study",
-    body: "fgkgcjhfd",
-    isComplete: false,
-  },
+  }
 ];
 
 function App() {

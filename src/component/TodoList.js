@@ -27,9 +27,11 @@ export default function TodoList() {
   });
 }, [todos]);
 
-  const notCompletedTodos = todos.filter((t) => {
-    return !t.isComplete;
-  });
+  const notCompletedTodos = useMemo(() => {
+    return todos.filter((t) => {
+      return !t.isComplete;
+    });
+  }, [todos]);
 
   let renderedTodos = todos
   if (displayTodosType === "completed") {
@@ -101,6 +103,7 @@ export default function TodoList() {
           </ToggleButtonGroup>
 
           {todoL}
+          
           <Grid container spacing={2} sx={{ marginTop: "15px" }}>
             <Grid size={8}>
               <TextField
