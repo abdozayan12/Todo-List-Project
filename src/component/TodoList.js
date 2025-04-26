@@ -53,9 +53,12 @@ export default function TodoList() {
 
   
   useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos")) ?? [];
-    setToDos(storedTodos);
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos) {
+      setToDos(storedTodos);
+    }
   }, []);
+
 
   function changeDisplayType(e) {
     setDisplayTodosType(e.target.value)
