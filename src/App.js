@@ -35,7 +35,7 @@ const initialToDos = [
 function App() {
   const getInitialTodos = () => {
     const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    return storedTodos || [];
+    return storedTodos || initialToDos;
   };
   const [todos, setToDos] = useState(getInitialTodos);
   return (
