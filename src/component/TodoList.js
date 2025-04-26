@@ -9,18 +9,23 @@ import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { TodoContext } from "../context/TodosContext";
 import { v4 as uuidv4 } from "uuid";
+
 
 export default function TodoList() {
   const { todos, setToDos } = useContext(TodoContext);
   const [titleInput, setTitleInput] = useState("");
   const [displayTodosType, setDisplayTodosType] = useState("all")
 
-const completedTodos = todos.filter((t) => {
-  return t.isComplete;
-});
+  
+
+  const completedTodos = useMemo(() => {
+  return todos.filter((t) => {
+    return t.isComplete;
+  });
+}, [todos]);
 
   const notCompletedTodos = todos.filter((t) => {
     return !t.isComplete;
