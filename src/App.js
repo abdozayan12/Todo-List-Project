@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { TodoContext } from "./context/TodosContext";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import { colors } from "@mui/material";
+
 
 const theme = createTheme({
   typography: {
@@ -33,7 +33,11 @@ const initialToDos = [
 ];
 
 function App() {
-  const [todos, setToDos] = useState(initialToDos);
+  const getInitialTodos = () => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    return storedTodos || [];
+  };
+  const [todos, setToDos] = useState(getInitialTodos);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">

@@ -61,6 +61,11 @@ export default function Todo({ id, title, body, isComplete }) {
   }
 
   function handleConfirmUpdate(todoId) {
+    if (updatedTodo.title.trim() === "") {
+      alert("عنوان المهمه لا يمكن أن يكون فارغًا");
+      return;
+    }
+
     const updatedTodos = todos.map((t) => {
       if (t.id === todoId) {
         return { ...t, title: updatedTodo.title, body: updatedTodo.body };
